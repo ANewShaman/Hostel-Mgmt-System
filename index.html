@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2;
+            --background-color: #f0f2f5;
+            --surface-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --success-color: #417505;
+            --danger-color: #dc3545;
+            --warning-color: #f5a623;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+            --spacing-unit: 1rem;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        #login-page {
+            max-width: 400px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        button,
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        /* Specific button styles */
+        .mark-paid-btn {
+            background-color: var(--success-color);
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            margin: 0;
+        }
+        .mark-paid-btn:hover {
+            background-color: #3a6a04;
+        }
+
+        .action-btn-approve {
+            background-color: var(--success-color);
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            margin: 0 5px 0 0;
+        }
+        .action-btn-approve:hover {
+             background-color: #3a6a04;
+        }
+
+        .action-btn-deny {
+            background-color: var(--danger-color);
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            margin: 0;
+        }
+         .action-btn-deny:hover {
+             background-color: #b02a37;
+         }
+
+
+        button:hover,
+        .button:hover {
+            background-color: #3a7bd5;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        .form-group input[readonly] {
+            background-color: #f0f2f5;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .forgot-password-link {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .forgot-password-link:hover {
+            text-decoration: underline;
+        }
+        #forgot-password-section {
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+        #reset-message {
+            margin-top: 1rem;
+            font-size: 0.9em;
+        }
+        .success-message {
+            color: var(--success-color);
+        }
+        .error-message {
+            color: var(--danger-color);
+        }
+
+        .dashboard-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .dashboard-nav button {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+            padding: 0.5rem 1rem;
+            margin-top: 0;
+            font-size: 0.9rem;
+        }
+
+        .dashboard-nav button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .module {
+            display: none;
+        }
+
+        .module.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        table th,
+        table td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: var(--background-color);
+            font-weight: 600;
+            color: #666;
+        }
+
+        table tr:hover {
+            background-color: #f7f9fb;
+        }
+
+        /* Status colors */
+        .status-paid,
+        .status-resolved,
+        .status-approved {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+
+        .status-denied {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-content {
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            box-shadow: var(--box-shadow);
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+        }
+
+        .popup.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .popup.show .popup-content {
+            transform: translateY(0);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="login-page">
+        <h2>Hostel Management Login</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Email:</label>
+                <input type="email" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Login</button>
+            <a href="#" id="forgot-password-link" class="forgot-password-link">Forgot Password?</a>
+        </form>
+
+        <div id="forgot-password-section" style="display: none;">
+            <h3>Reset Password</h3>
+            <p>Enter your email address below, and we'll send you a link to reset your password.</p>
+            <form id="reset-password-form">
+                <div class="form-group">
+                    <label for="reset-email">Email:</label>
+                    <input type="email" id="reset-email" required>
+                </div>
+                <button type="submit">Send Reset Email</button>
+                <a href="#" id="back-to-login-link" class="forgot-password-link">Back to Login</a>
+            </form>
+            <p id="reset-message"></p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <header>
+            <h1 id="header-title">Hostel Management System</h1>
+            <button id="logout-button">Log Out</button>
+        </header>
+
+        <!-- ========================================
+            ADMIN DASHBOARD
+        ======================================== -->
+        <div id="admin-dashboard" class="container" style="display: none;">
+            <div class="dashboard-nav">
+                <button id="nav-admin-users" class="active">User Management</button>
+                <button id="nav-admin-fees">Fee Management</button>
+                <button id="nav-admin-complaints">All Complaints</button>
+                <button id="nav-admin-leave">All Leave</button> <!-- Admin can see leave too -->
+            </div>
+
+            <div id="admin-users-module" class="module active">
+                <h2>User Management</h2>
+                <hr>
+                <h3>Create New Student Account</h3>
+                <form id="add-student-form">
+                    <div class="form-group">
+                        <label for="student-name">Full Name:</label>
+                        <input type="text" id="student-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-email">Student Email:</label>
+                        <input type="email" id="student-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-password">Temporary Password:</label>
+                        <input type="password" id="student-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-course">Course:</label>
+                        <input type="text" id="student-course" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-gender">Gender:</label>
+                        <select id="student-gender" required>
+                            <option value="">-- Select Gender --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-room-pref">Room Preference:</label>
+                        <select id="student-room-pref" required>
+                            <option value="">-- Select Preference --</option>
+                            <option value="single">Single</option>
+                            <option value="sharing">Sharing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-room">Room No. (Auto-allotted):</label>
+                        <input type="text" id="student-room" readonly placeholder="Select gender & preference...">
+                    </div>
+                    <button type="submit" id="create-student-btn" disabled>Create Student</button>
+                </form>
+                <hr>
+                <h3>All Students</h3>
+                <table>
+                    <tbody id="admin-students-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="admin-fees-module" class="module">
+                <h2>Fee Management</h2>
+                <hr>
+                <h3>Create New Invoice</h3>
+                <form id="create-invoice-form">
+                    <div class="form-group">
+                        <label for="invoice-student">Select Student:</label>
+                        <select id="invoice-student" required>
+                            <option value="">-- Loading Students --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-desc">Description (e.g., Quarterly Fee):</label>
+                        <input type="text" id="invoice-desc" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-amount">Amount (₹):</label>
+                        <input type="number" id="invoice-amount" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="invoice-due-date">Due Date:</label>
+                        <input type="date" id="invoice-due-date" required>
+                    </div>
+                    <button type="submit">Create Invoice</button>
+                </form>
+                <hr>
+                <h3>All Invoices</h3>
+                <table>
+                    <tbody id="admin-invoices-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="admin-complaints-module" class="module">
+                <h2>All Complaints (Admin View)</h2>
+                <table>
+                    <tbody id="admin-complaints-table-body">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="admin-leave-module" class="module">
+                <h2>All Leave Requests (Admin View)</h2>
+                 <p>Admins can view all leave requests but only wardens can approve/deny.</p>
+                <table>
+                    <tbody id="admin-leave-table-body">
+                        <!-- Admin leave list will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- ========================================
+            WARDEN DASHBOARD
+        ======================================== -->
+        <div id="warden-dashboard" class="container" style="display: none;">
+            <div class="dashboard-nav">
+                <button id="nav-warden-complaints" class="active">Complaint Management</button>
+                <button id="nav-warden-students">Student Room List</button>
+                <button id="nav-warden-leave">Leave Requests</button>
+            </div>
+
+            <div id="warden-complaints-module" class="module active">
+                <h2>Complaint Management</h2>
+                <p>Review and resolve student complaints.</p>
+                <table>
+                    <tbody id="warden-complaints-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="warden-students-module" class="module">
+                <h2>Student Room List</h2>
+                <p>View student and room assignments.</p>
+                <table>
+                    <tbody id="warden-students-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="warden-leave-module" class="module">
+                <h2>Leave Requests</h2>
+                <p>Approve or deny student leave requests.</p>
+                <table>
+                    <tbody id="warden-leave-table-body">
+                         <!-- Warden leave list will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================
+            STUDENT DASHBOARD
+        ======================================== -->
+        <div id="student-dashboard" class="container" style="display: none;">
+            <div class="dashboard-nav">
+                <button id="nav-student-profile" class="active">My Profile</button>
+                <button id="nav-student-complaint">Submit Complaint</button>
+                <button id="nav-student-fees">Fee Summary</button>
+                <button id="nav-student-leave">Request Leave</button>
+            </div>
+
+            <div id="student-profile-module" class="module active">
+                <h3>My Details</h3>
+                <p><strong>Name:</strong> <span id="student-profile-name">...</span></p>
+                <p><strong>Email:</strong> <span id="student-profile-email">...</span></p>
+                <p><strong>Room:</strong> <span id="student-profile-room">...</span></p>
+                <p><strong>Course:</strong> <span id="student-profile-course">...</span></p>
+                <hr>
+                <h3>Roommates</h3>
+                <ul id="roommates-list">
+                </ul>
+            </div>
+
+            <div id="student-complaint-module" class="module">
+                <h2>Submit a Complaint</h2>
+                <form id="complaint-form">
+                    <div class="form-group">
+                        <label for="complaint-text">Describe your issue:</label>
+                        <textarea id="complaint-text" rows="4" required></textarea>
+                    </div>
+                    <button type="submit">Submit Complaint</button>
+                </form>
+                <hr>
+                <h3>My Complaint Status</h3>
+                <table>
+                    <tbody id="student-complaints-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="student-fees-module" class="module">
+                <h2>Fee Summary</h2>
+                <p>This is a real-time list of your invoices from the admin office.</p>
+                <table>
+                    <tbody id="student-invoices-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="student-leave-module" class="module">
+                <h2>Request Leave</h2>
+                <p>Submit a leave request to your warden.</p>
+                <form id="leave-form">
+                    <div class="form-group">
+                        <label for="leave-start-date">Start Date:</label>
+                        <input type="date" id="leave-start-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-end-date">End Date:</label>
+                        <input type="date" id="leave-end-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-reason">Reason:</label>
+                        <textarea id="leave-reason" rows="3" required></textarea>
+                    </div>
+                    <button type="submit">Submit Request</button>
+                </form>
+                <hr>
+                <h3>My Leave Request Status</h3>
+                <table>
+                    <tbody id="student-leave-table-body">
+                        <!-- Student leave list will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+        POPUP MODALS
+    ======================================== -->
+    <div id="popup-complaint" class="popup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup('popup-complaint')">&times;</button>
+            <h3>Complaint Submitted!</h3>
+            <p>Your complaint has been successfully submitted to the warden.</p>
+        </div>
+    </div>
+
+    <div id="popup-new-student" class="popup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup('popup-new-student')">&times;</button>
+            <h3>Student Created!</h3>
+            <p>New student auth account and profile created successfully.</p>
+        </div>
+    </div>
+    
+    <div id="popup-new-invoice" class="popup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup('popup-new-invoice')">&times;</button>
+            <h3>Invoice Created!</h3>
+            <p>The invoice has been created and the student will see it in their portal.</p>
+        </div>
+    </div>
+    
+    <div id="popup-leave-request" class="popup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup('popup-leave-request')">&times;</button>
+            <h3>Leave Request Submitted!</h3>
+            <p>Your request has been sent to the warden for approval.</p>
+        </div>
+    </div>
+
+
+    <!-- ========================================
+        FIREBASE SDKs
+    ======================================== -->
+    <script type="module">
+        // --- 1. FIREBASE IMPORTS ---
+        import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            signOut,
+            createUserWithEmailAndPassword,
+            sendPasswordResetEmail,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+        import {
+            getFirestore,
+            collection,
+            doc,
+            getDoc,
+            getDocs,
+            setDoc,
+            addDoc,
+            updateDoc,
+            onSnapshot,
+            query,
+            where,
+            orderBy,
+            serverTimestamp,
+            limit,
+            Timestamp,
+            increment 
+        } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+        // --- 2. FIREBASE CONFIG & INIT ---
+        // This is a mock config. Replace with your actual Firebase project config.
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsqiEPr7LeE12geKcjzGMbyX1YPBTwzo0",
+            authDomain: "hostelmgmt-583c6.firebaseapp.com",
+            projectId: "hostelmgmt-583c6",
+            storageBucket: "hostelmgmt-583c6.firebasestorage.app",
+            messagingSenderId: "719675999639",
+            appId: "1:719675999639:web:4e90de272c0d43a02c30d2"
+        };
+        
+        let app;
+        let auth;
+        let db;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            console.log("Firebase Initialized Successfully");
+        } catch (e) {
+            console.error("Error initializing Firebase: ", e);
+            document.body.innerHTML = "<h1>Error initializing Firebase. Please check console.</h1>";
+        }
+
+
+        // --- Wait for DOM Ready ---
+        window.addEventListener('DOMContentLoaded', () => {
+
+            // --- 3. DOM ELEMENTS CACHE ---
+            const loginPage = document.getElementById('login-page');
+            const mainContent = document.getElementById('main-content');
+            const headerTitle = document.getElementById('header-title');
+            const loginForm = document.getElementById('login-form');
+            const logoutButton = document.getElementById('logout-button');
+            const forgotPasswordLink = document.getElementById('forgot-password-link'); 
+            const forgotPasswordSection = document.getElementById('forgot-password-section'); 
+            const resetPasswordForm = document.getElementById('reset-password-form'); 
+            const backToLoginLink = document.getElementById('back-to-login-link'); 
+            const resetMessage = document.getElementById('reset-message'); 
+            
+            // Dashboards
+            const adminDashboard = document.getElementById('admin-dashboard');
+            const wardenDashboard = document.getElementById('warden-dashboard');
+            const studentDashboard = document.getElementById('student-dashboard');
+
+            // Admin
+            const addStudentForm = document.getElementById('add-student-form');
+            const createInvoiceForm = document.getElementById('create-invoice-form');
+            const adminNavButtons = document.querySelectorAll('#admin-dashboard .dashboard-nav button');
+            const adminModules = document.querySelectorAll('#admin-dashboard .module');
+            const adminStudentsTableBody = document.getElementById('admin-students-table-body');
+            const adminComplaintsTableBody = document.getElementById('admin-complaints-table-body');
+            const studentGenderSelect = document.getElementById('student-gender');
+            const studentRoomPrefSelect = document.getElementById('student-room-pref'); 
+            const studentRoomInput = document.getElementById('student-room');
+            const createStudentBtn = document.getElementById('create-student-btn');
+            const adminInvoicesTableBody = document.getElementById('admin-invoices-table-body');
+            const invoiceStudentSelect = document.getElementById('invoice-student');
+            const adminLeaveTableBody = document.getElementById('admin-leave-table-body');
+            
+            // Warden
+            const wardenNavButtons = document.querySelectorAll('#warden-dashboard .dashboard-nav button');
+            const wardenModules = document.querySelectorAll('#warden-dashboard .module');
+            const wardenComplaintsTableBody = document.getElementById('warden-complaints-table-body'); 
+            const wardenStudentsTableBody = document.getElementById('warden-students-table-body');
+            const wardenLeaveTableBody = document.getElementById('warden-leave-table-body');
+
+            // Student
+            const complaintForm = document.getElementById('complaint-form');
+            const leaveForm = document.getElementById('leave-form');
+            const studentNavButtons = document.querySelectorAll('#student-dashboard .dashboard-nav button');
+            const studentModules = document.querySelectorAll('#student-dashboard .module');
+            const studentProfileName = document.getElementById('student-profile-name');
+            const studentProfileEmail = document.getElementById('student-profile-email');
+            const studentProfileRoom = document.getElementById('student-profile-room');
+            const studentProfileCourse = document.getElementById('student-profile-course');
+            const roommatesList = document.getElementById('roommates-list');
+            const studentComplaintsTableBody = document.getElementById('student-complaints-table-body');
+            const studentInvoicesTableBody = document.getElementById('student-invoices-table-body');
+            const studentLeaveTableBody = document.getElementById('student-leave-table-body');
+
+            // Popups
+            const popupComplaint = document.getElementById('popup-complaint');
+            const popupNewStudent = document.getElementById('popup-new-student');
+            const popupNewInvoice = document.getElementById('popup-new-invoice'); 
+            const popupLeaveRequest = document.getElementById('popup-leave-request');
+
+
+            // --- 4. GLOBAL STATE ---
+            let appListeners = []; // To store unsubscribe functions
+            let currentUserRole = null;
+            let currentUserId = null;
+
+
+            // --- 5. CORE APP LOGIC (AUTH STATE, LOGIN / LOGOUT / PASSWORD RESET) ---
+
+            // Central Auth State Listener
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // User is signed in
+                    console.log("Auth state changed: User is signed in", user.uid);
+                    currentUserId = user.uid;
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    
+                    if (!userDoc.exists()) {
+                        console.error('User role not found in Firestore. Signing out.');
+                        alert('User role not found. Contact admin.');
+                        await doLogout();
+                        return;
+                    }
+                    
+                    const userData = userDoc.data();
+                    currentUserRole = userData.role;
+                    console.log("User role:", currentUserRole);
+                    
+                    if(loginPage) loginPage.style.display = 'none'; 
+                    if(mainContent) mainContent.style.display = 'block';
+                    if(forgotPasswordSection) forgotPasswordSection.style.display = 'none'; 
+                    if(loginForm) loginForm.style.display = 'block'; 
+
+                    // Load the correct dashboard based on role
+                    loadDashboard(currentUserRole, currentUserId);
+                    
+                } else {
+                    // User is signed out
+                    console.log("Auth state changed: User is signed out");
+                    cleanupOnLogout();
+                }
+            });
+
+            // Login Form
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const emailInput = document.getElementById('username');
+                    const passwordInput = document.getElementById('password');
+                    if (!emailInput || !passwordInput) return;
+                    const email = emailInput.value;
+                    const password = passwordInput.value;
+                    try {
+                        // signInWithEmailAndPassword will trigger the onAuthStateChanged listener
+                        await signInWithEmailAndPassword(auth, email, password);
+                        console.log("Login successful, onAuthStateChanged will handle dashboard.");
+                    } catch (error) { 
+                        alert('Login Failed: ' + error.message); 
+                    }
+                });
+            }
+            
+            // Logout Button
+            if (logoutButton) {
+                logoutButton.addEventListener('click', doLogout);
+            }
+            
+            async function doLogout() {
+                console.log("Logging out...");
+                await signOut(auth);
+                // onAuthStateChanged will handle the UI cleanup
+            }
+
+            // Cleanup UI and listeners on logout
+            function cleanupOnLogout() {
+                console.log("Cleaning up listeners and UI.");
+                appListeners.forEach(unsubscribe => unsubscribe()); 
+                appListeners = [];
+                currentUserRole = null;
+                currentUserId = null;
+                
+                if(mainContent) mainContent.style.display = 'none'; 
+                if(adminDashboard) adminDashboard.style.display = 'none';
+                if(wardenDashboard) wardenDashboard.style.display = 'none'; 
+                if(studentDashboard) studentDashboard.style.display = 'none';
+                if(loginPage) loginPage.style.display = 'block'; 
+                if(loginForm) loginForm.style.display = 'block'; 
+                if(forgotPasswordSection) forgotPasswordSection.style.display = 'none'; 
+                
+                if(loginForm) loginForm.reset(); 
+                if (resetPasswordForm) resetPasswordForm.reset(); 
+                if (resetMessage) resetMessage.textContent = '';
+                
+                // Reset all dynamic content
+                if(adminStudentsTableBody) adminStudentsTableBody.innerHTML = '';
+                if(adminComplaintsTableBody) adminComplaintsTableBody.innerHTML = '';
+                if(adminInvoicesTableBody) adminInvoicesTableBody.innerHTML = '';
+                if(adminLeaveTableBody) adminLeaveTableBody.innerHTML = '';
+                if(wardenComplaintsTableBody) wardenComplaintsTableBody.innerHTML = '';
+                if(wardenStudentsTableBody) wardenStudentsTableBody.innerHTML = '';
+                if(wardenLeaveTableBody) wardenLeaveTableBody.innerHTML = '';
+                if(studentComplaintsTableBody) studentComplaintsTableBody.innerHTML = '';
+                if(studentInvoicesTableBody) studentInvoicesTableBody.innerHTML = '';
+                if(studentLeaveTableBody) studentLeaveTableBody.innerHTML = '';
+            }
+
+            // Forgot Password
+             if(forgotPasswordLink) {
+                 forgotPasswordLink.addEventListener('click', (e) => {
+                     e.preventDefault(); 
+                     if(loginForm) loginForm.style.display = 'none'; 
+                     if(forgotPasswordSection) forgotPasswordSection.style.display = 'block'; 
+                     if (resetMessage) resetMessage.textContent = '';
+                 });
+             }
+             if(backToLoginLink) {
+                 backToLoginLink.addEventListener('click', (e) => {
+                     e.preventDefault(); 
+                     if(forgotPasswordSection) forgotPasswordSection.style.display = 'none'; 
+                     if(loginForm) loginForm.style.display = 'block';
+                 });
+             }
+             if(resetPasswordForm) {
+                 resetPasswordForm.addEventListener('submit', async (e) => {
+                     e.preventDefault();
+                     const emailInput = document.getElementById('reset-email');
+                     if(!emailInput) return;
+                     const email = emailInput.value;
+                     if (resetMessage) { resetMessage.textContent = 'Sending reset email...'; resetMessage.className = ''; }
+                     try {
+                         await sendPasswordResetEmail(auth, email);
+                         if (resetMessage) { resetMessage.textContent = 'Password reset email sent! Check your inbox.'; resetMessage.className = 'success-message'; }
+                         if (resetPasswordForm) resetPasswordForm.reset();
+                     } catch (error) {
+                         console.error("Password reset error:", error);
+                         if (resetMessage) { resetMessage.textContent = 'Failed to send reset email. Error: ' + error.message; resetMessage.className = 'error-message'; }
+                     }
+                 });
+             }
+
+
+            // --- 6. DATA LOADING FUNCTIONS ---
+            
+            function loadDashboard(role, uid) {
+                 // Clear old listeners before loading new ones
+                appListeners.forEach(unsubscribe => unsubscribe());
+                appListeners = [];
+                
+                // Hide all dashboards first
+                if(adminDashboard) adminDashboard.style.display = 'none';
+                if(wardenDashboard) wardenDashboard.style.display = 'none';
+                if(studentDashboard) studentDashboard.style.display = 'none';
+
+                if (role === 'admin') {
+                    if(headerTitle) headerTitle.textContent = "Admin Dashboard"; 
+                    if(adminDashboard) adminDashboard.style.display = 'block'; 
+                    loadAdminData();
+                } else if (role === 'warden') {
+                    if(headerTitle) headerTitle.textContent = "Warden Dashboard"; 
+                    if(wardenDashboard) wardenDashboard.style.display = 'block'; 
+                    loadWardenData();
+                } else if (role === 'student') {
+                    if(headerTitle) headerTitle.textContent = "Student Dashboard"; 
+                    if(studentDashboard) studentDashboard.style.display = 'block'; 
+                    loadStudentData(uid);
+                }
+            }
+            
+            function loadAdminData() {
+                console.log("Loading Admin Data");
+                listenForStudents(adminStudentsTableBody); 
+                listenForComplaints(adminComplaintsTableBody);
+                populateStudentDropdown(); 
+                listenForInvoices(); 
+                listenForLeaveRequests(adminLeaveTableBody, 'admin'); // Admin view
+            }
+            function loadWardenData() {
+                console.log("Loading Warden Data");
+                listenForStudents(wardenStudentsTableBody); 
+                listenForComplaints(wardenComplaintsTableBody);
+                listenForLeaveRequests(wardenLeaveTableBody, 'warden'); // Warden view
+            }
+            function loadStudentData(uid) {
+                console.log("Loading Student Data for", uid);
+                loadStudentProfile(uid); 
+                listenForMyComplaints(uid); 
+                listenForMyInvoices(uid); 
+                listenForMyLeaveRequests(uid);
+            }
+            
+            async function loadStudentProfile(uid) { 
+                try {
+                    const studentDocRef = doc(db, 'students', uid); 
+                    const studentDoc = await getDoc(studentDocRef);
+                    if (!studentDoc.exists()) return;
+                    const student = studentDoc.data();
+                    if(studentProfileName) studentProfileName.textContent = student.name; 
+                    if(studentProfileEmail) studentProfileEmail.textContent = student.email;
+                    if(studentProfileRoom) studentProfileRoom.textContent = student.room;
+                    if(studentProfileCourse) studentProfileCourse.textContent = student.course;
+                    
+                    // Load roommates
+                    const studentsCollection = collection(db, 'students');
+                    const q = query(studentsCollection, where('room', '==', student.room));
+                    const roommateQuerySnapshot = await getDocs(q);
+                    if(roommatesList) roommatesList.innerHTML = '';
+                    if (roommateQuerySnapshot.empty || roommateQuerySnapshot.size === 1) {
+                        if(roommatesList) roommatesList.innerHTML = '<li>You do not have any roommates.</li>';
+                    }
+                    roommateQuerySnapshot.docs.forEach(doc => {
+                        if (doc.id === uid) return;
+                        const roommate = doc.data(); 
+                        const li = document.createElement('li');
+                        li.textContent = `${roommate.name} (${roommate.course})`;
+                        if(roommatesList) roommatesList.appendChild(li);
+                    });
+                } catch (error) { console.error("Error loading student profile:", error); }
+            }
+            
+            async function populateStudentDropdown() { 
+                if(!invoiceStudentSelect) return;
+                invoiceStudentSelect.innerHTML = '<option value="">-- Loading Students --</option>';
+                try {
+                    const q = query(collection(db, 'students'), orderBy('name')); 
+                    const snapshot = await getDocs(q);
+                    let optionsHTML = '<option value="">-- Select a Student --</option>';
+                    snapshot.docs.forEach(doc => {
+                        const student = doc.data();
+                        optionsHTML += `<option value="${doc.id}|${student.name}">${student.name} (${student.email})</option>`;
+                    });
+                    invoiceStudentSelect.innerHTML = optionsHTML;
+                } catch (error) { console.error("Error populating student dropdown: ", error); invoiceStudentSelect.innerHTML = '<option value="">-- Error --</option>'; }
+            }
+
+
+            // --- 7. REAL-TIME LISTENERS (onSnapshot) ---
+            
+            function listenForStudents(tableBody) { 
+                if(!tableBody) { console.warn("Student table body not found for listener."); return; }
+                const q = query(collection(db, 'students'), orderBy('name'));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>Name</th><th>Email</th><th>Room</th><th>Course</th></tr>';
+                    const rowsHTML = snapshot.docs.map(doc => { 
+                        const student = doc.data(); 
+                        return `<tr><td>${student.name || ''}</td><td>${student.email||''}</td><td>${student.room||''}</td><td>${student.course||''}</td></tr>`;
+                    }).join('');
+                    tableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for students:", error)); 
+                appListeners.push(listener);
+            }
+            
+            function listenForComplaints(tableBody) { 
+                if(!tableBody) { console.warn("Complaints table body not found for listener."); return;}
+                const q = query(collection(db, 'complaints'), orderBy('createdAt', 'desc'));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>Student</th><th>Issue</th><th>Status</th><th>Action</th></tr>';
+                    const rowsHTML = snapshot.docs.map(doc => { 
+                        const complaint = doc.data(); 
+                        const status = complaint.status || 'unknown'; 
+                        const statusClass = `status-${status.toLowerCase().replace(' ', '-')}`;
+                        let actionButton = '';
+                        if (status === 'Pending' && tableBody.id === 'warden-complaints-table-body') {
+                            actionButton = `<button class="action-btn-approve resolve-btn" data-id="${doc.id}">Resolve</button>`;
+                        } else if (status === 'Resolved') {
+                             actionButton = 'Resolved';
+                        }
+                        return `<tr><td>${complaint.studentName || 'Unknown'}</td><td>${complaint.issue||''}</td><td class="${statusClass}">${status}</td><td>${actionButton}</td></tr>`;
+                    }).join('');
+                    tableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for complaints:", error)); 
+                appListeners.push(listener);
+            }
+            
+            function listenForMyComplaints(uid) { 
+                if(!studentComplaintsTableBody) {console.warn("Student complaints table body not found."); return;}
+                // *** FIX: Removed orderBy('createdAt', 'desc') to prevent index error ***
+                const q = query(collection(db, 'complaints'), where('studentId', '==', uid));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>Issue</th><th>Status</th><th>Submitted</th></tr>';
+                    if (snapshot.empty) { studentComplaintsTableBody.innerHTML = '<tr><td colspan="3">You have no complaints.</td></tr>'; return; }
+                    
+                    // *** FIX: Sort documents manually in JavaScript ***
+                    const docs = snapshot.docs.sort((a, b) => {
+                        const timeA = a.data().createdAt?.seconds || 0;
+                        const timeB = b.data().createdAt?.seconds || 0;
+                        return timeB - timeA;
+                    });
+
+                    const rowsHTML = docs.map(doc => { 
+                        const complaint = doc.data(); 
+                        const status = complaint.status || 'unknown';
+                        const statusClass = `status-${status.toLowerCase().replace(' ', '-')}`;
+                        const submittedDate = complaint.createdAt?.toDate()?.toLocaleDateString() || 'N/A'; 
+                        return `<tr><td>${complaint.issue||''}</td><td class="${statusClass}">${status}</td><td>${submittedDate}</td></tr>`;
+                    }).join('');
+                    studentComplaintsTableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for my complaints:", error)); 
+                appListeners.push(listener);
+            }
+            
+            function listenForInvoices() { 
+                if(!adminInvoicesTableBody) { console.warn("Admin invoices table body not found."); return; }
+                const q = query(collection(db, 'invoices'), orderBy('createdAt', 'desc'));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>Student</th><th>Description</th><th>Amount</th><th>Due Date</th><th>Status</th><th>Action</th></tr>';
+                    const rowsHTML = snapshot.docs.map(doc => { 
+                        const invoice = doc.data(); 
+                        const status = invoice.status || 'unknown';
+                        const statusClass = `status-${status.toLowerCase()}`;
+                        const dueDate = invoice.dueDate?.toDate()?.toLocaleDateString() || 'N/A'; 
+                        const amount = typeof invoice.amount === 'number' ? invoice.amount : 0; 
+                        let actionButton = '';
+                        if (status === 'Pending') {
+                            actionButton = `<button class="mark-paid-btn" data-id="${doc.id}">Mark as Paid</button>`;
+                        } else {
+                            actionButton = 'Paid';
+                        }
+                        return `<tr><td>${invoice.studentName||''}</td><td>${invoice.description||''}</td><td>₹${amount.toLocaleString('en-IN')}</td><td>${dueDate}</td><td class="${statusClass}">${status}</td><td>${actionButton}</td></tr>`;
+                    }).join('');
+                    adminInvoicesTableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for invoices:", error)); 
+                appListeners.push(listener);
+            }
+            
+            function listenForMyInvoices(uid) { 
+                if(!studentInvoicesTableBody) { console.warn("Student invoices table body not found."); return; }
+                // *** FIX: Removed orderBy('createdAt', 'desc') to prevent index error ***
+                const q = query(collection(db, 'invoices'), where('studentId', '==', uid));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>Description</th><th>Amount</th><th>Due Date</th><th>Status</th></tr>';
+                    if (snapshot.empty) { studentInvoicesTableBody.innerHTML = '<tr><td colspan="4">You have no invoices.</td></tr>'; return; }
+                    
+                    // *** FIX: Sort documents manually in JavaScript ***
+                     const docs = snapshot.docs.sort((a, b) => {
+                        const timeA = a.data().createdAt?.seconds || 0;
+                        const timeB = b.data().createdAt?.seconds || 0;
+                        return timeB - timeA;
+                    });
+
+                    const rowsHTML = docs.map(doc => { 
+                        const invoice = doc.data(); 
+                        const status = invoice.status || 'unknown';
+                        const statusClass = `status-${status.toLowerCase()}`;
+                        const dueDate = invoice.dueDate?.toDate()?.toLocaleDateString() || 'N/A';
+                        const amount = typeof invoice.amount === 'number' ? invoice.amount : 0;
+                        return `<tr><td>${invoice.description||''}</td><td>₹${amount.toLocaleString('en-IN')}</td><td>${dueDate}</td><td class="${statusClass}">${status}</td></tr>`;
+                    }).join('');
+                    studentInvoicesTableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for my invoices:", error)); 
+                appListeners.push(listener);
+            }
+
+            function listenForLeaveRequests(tableBody, role) { // role is 'admin' or 'warden'
+                if(!tableBody) { console.warn("Leave request table body not found for", role); return; }
+                const q = query(collection(db, 'leaveRequests'), orderBy('createdAt', 'desc'));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>Student</th><th>From</th><th>To</th><th>Reason</th><th>Status</th><th>Action</th></tr>';
+                    if (snapshot.empty) { tableBody.innerHTML = '<tr><td colspan="6">No leave requests found.</td></tr>'; return; }
+                    const rowsHTML = snapshot.docs.map(doc => { 
+                        const req = doc.data(); 
+                        const status = req.status || 'unknown';
+                        const statusClass = `status-${status.toLowerCase()}`;
+                        const startDate = req.startDate?.toDate()?.toLocaleDateString() || 'N/A';
+                        const endDate = req.endDate?.toDate()?.toLocaleDateString() || 'N/A';
+                        
+                        let actionButtons = '';
+                        if (status === 'Pending' && role === 'warden') {
+                            actionButtons = `
+                                <button class="action-btn-approve approve-leave-btn" data-id="${doc.id}">Approve</button>
+                                <button class="action-btn-deny deny-leave-btn" data-id="${doc.id}">Deny</button>
+                            `;
+                        } else {
+                            actionButtons = status; // Show 'Approved' or 'Denied' text
+                        }
+                        
+                        return `<tr>
+                            <td>${req.studentName||''}</td>
+                            <td>${startDate}</td>
+                            <td>${endDate}</td>
+                            <td>${req.reason||''}</td>
+                            <td class="${statusClass}">${status}</td>
+                            <td>${actionButtons}</td>
+                        </tr>`;
+                    }).join('');
+                    tableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for leave requests:", error)); 
+                appListeners.push(listener);
+            }
+            
+            function listenForMyLeaveRequests(uid) {
+                if(!studentLeaveTableBody) { console.warn("Student leave table body not found."); return; }
+                // *** FIX: Removed orderBy('createdAt', 'desc') to prevent index error ***
+                const q = query(collection(db, 'leaveRequests'), where('studentId', '==', uid));
+                const listener = onSnapshot(q, (snapshot) => { 
+                    const header = '<tr><th>From</th><th>To</th><th>Reason</th><th>Status</th></tr>';
+                    if (snapshot.empty) { studentLeaveTableBody.innerHTML = '<tr><td colspan="4">You have no leave requests.</td></tr>'; return; }
+
+                    // *** FIX: Sort documents manually in JavaScript ***
+                     const docs = snapshot.docs.sort((a, b) => {
+                        const timeA = a.data().createdAt?.seconds || 0;
+                        const timeB = b.data().createdAt?.seconds || 0;
+                        return timeB - timeA;
+                    });
+                    
+                    const rowsHTML = docs.map(doc => { 
+                        const req = doc.data(); 
+                        const status = req.status || 'unknown';
+                        const statusClass = `status-${status.toLowerCase()}`;
+                        const startDate = req.startDate?.toDate()?.toLocaleDateString() || 'N/A';
+                        const endDate = req.endDate?.toDate()?.toLocaleDateString() || 'N/A';
+                        return `<tr>
+                            <td>${startDate}</td>
+                            <td>${endDate}</td>
+                            <td>${req.reason||''}</td>
+                            <td class="${statusClass}">${status}</td>
+                        </tr>`;
+                    }).join('');
+                    studentLeaveTableBody.innerHTML = header + rowsHTML;
+                }, error => console.error("Error listening for my leave requests:", error)); 
+                appListeners.push(listener);
+            }
+
+
+            // --- 8. ROOM ALLOTMENT (FIXED QUERY + ELEMENT CHECKS) ---
+            async function findAndSetRoom() {
+                const genderSelect = document.getElementById('student-gender');
+                const roomPrefSelect = document.getElementById('student-room-pref');
+                const roomInput = document.getElementById('student-room');
+                const createBtn = document.getElementById('create-student-btn');
+
+                if (!genderSelect || !roomPrefSelect || !roomInput || !createBtn) {
+                    console.error("Missing critical elements required for room allotment. Cannot proceed.");
+                    if(roomInput) roomInput.value = 'Internal Error: Form elements missing.';
+                    if(createBtn) createBtn.disabled = true;
+                    return; 
+                }
+
+                const gender = genderSelect.value;
+                const preference = roomPrefSelect.value; 
+
+                if (!gender || !preference) {
+                    roomInput.value = 'Select gender & preference...';
+                    createBtn.disabled = true;
+                    return;
+                }
+
+                roomInput.value = 'Searching...';
+                createBtn.disabled = true;
+                console.log(`Searching for ${preference} ${gender} room...`); 
+
+                try {
+                    const roomsRef = collection(db, 'rooms');
+                    let q;
+                    let foundRoomId = null;
+
+                    console.log(`Querying Firestore for rooms with gender: ${gender}`);
+                    q = query(roomsRef, where('gender', '==', gender));
+                    const querySnapshot = await getDocs(q);
+                    
+                    const potentialRooms = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    console.log(`Found ${potentialRooms.length} potential rooms for gender ${gender}:`, potentialRooms);
+
+
+                    if (potentialRooms.length === 0) {
+                        console.log(`No rooms found matching gender ${gender}.`);
+                        roomInput.value = `No rooms found for ${gender}.`;
+                        return; 
+                    }
+
+                    // Client-side filtering based on preference and availability
+                    let suitableRoom = null;
+                    if (preference === 'single') {
+                        console.log("Filtering for single rooms (capacity=1, status=available)...");
+                        suitableRoom = potentialRooms.find(room => 
+                            room.capacity === 1 && room.status === 'available'
+                        );
+                        console.log("Single room found:", suitableRoom);
+                    } else { // 'sharing'
+                        console.log("Filtering for sharing rooms (capacity>1, occupancy<capacity, status!=full)...");
+                        // Prioritize rooms with 1 occupant (partially filled)
+                        suitableRoom = potentialRooms.find(room => 
+                            room.capacity > 1 && 
+                            room.occupancy > 0 && 
+                            room.occupancy < room.capacity &&
+                            room.status !== 'full' 
+                        );
+                        console.log("Partially filled sharing room found:", suitableRoom);
+                        // If no partially filled found, look for completely empty sharing rooms
+                        if (!suitableRoom) {
+                            console.log("No partially filled found. Filtering for empty sharing rooms (capacity>1, occupancy=0, status=available)...");
+                            suitableRoom = potentialRooms.find(room => 
+                                room.capacity > 1 && 
+                                room.occupancy === 0 && 
+                                room.status === 'available'
+                            );
+                            console.log("Empty sharing room found:", suitableRoom);
+                        }
+                    }
+
+                    // Update UI based on finding a room
+                    if (suitableRoom) {
+                        foundRoomId = suitableRoom.id;
+                        console.log(`Selected room: ${foundRoomId}`);
+                        roomInput.value = foundRoomId;
+                        createBtn.disabled = false;
+                    } else {
+                        console.log(`No suitable ${preference} ${gender} room found after filtering.`);
+                        roomInput.value = `No available ${preference} ${gender} rooms.`;
+                    }
+
+
+                } catch (error) {
+                    console.error("Error finding room: ", error); // Log the actual Firestore error
+                    roomInput.value = 'Error finding room. See console.'; // More specific error message
+                }
+            }
+
+            if(studentGenderSelect) studentGenderSelect.addEventListener('change', findAndSetRoom);
+            if(studentRoomPrefSelect) studentRoomPrefSelect.addEventListener('change', findAndSetRoom);
+
+
+            // --- 9. FORM SUBMISSIONS (Write to DB) ---
+             if (addStudentForm) {
+                 addStudentForm.addEventListener('submit', async (e) => {
+                     e.preventDefault();
+                     if(!createStudentBtn) return;
+                     createStudentBtn.disabled = true;
+
+                     const nameInput = document.getElementById('student-name');
+                     const emailInput = document.getElementById('student-email');
+                     const passwordInput = document.getElementById('student-password');
+                     const courseInput = document.getElementById('student-course');
+                     const genderInput = document.getElementById('student-gender');
+                     const roomInput = document.getElementById('student-room');
+
+                     if (!nameInput || !emailInput || !passwordInput || !courseInput || !genderInput || !roomInput) {
+                         alert('Error: One or more form fields are missing.');
+                         createStudentBtn.disabled = false;
+                         return;
+                     }
+
+                     const name = nameInput.value;
+                     const email = emailInput.value;
+                     const password = passwordInput.value;
+                     const course = courseInput.value;
+                     const gender = genderInput.value;
+                     const room = roomInput.value; 
+                     
+                     if (!room || room.startsWith('No') || room.startsWith('Error') || room.startsWith('Search')) {
+                         alert('Cannot create student: No valid room is allotted.');
+                         createStudentBtn.disabled = false;
+                         return;
+                     }
+
+                     try {
+                         // 1. Create Auth user in a temporary app instance
+                         const tempApp = initializeApp(firebaseConfig, "temp-user-creation-" + Date.now()); 
+                         const tempAuth = getAuth(tempApp);
+                         const userCredential = await createUserWithEmailAndPassword(tempAuth, email, password);
+                         const uid = userCredential.user.uid;
+                         await signOut(tempAuth);
+                         await deleteApp(tempApp);
+
+                         // 2. Create 'users' role doc 
+                         await setDoc(doc(db, 'users', uid), { email: email, role: 'student' });
+
+                         // 3. Create 'students' profile doc 
+                         await setDoc(doc(db, 'students', uid), {
+                             name: name, email: email, course: course, gender: gender, room: room
+                         });
+
+                         // 4. Update 'rooms' doc 
+                         const roomDocRef = doc(db, 'rooms', room);
+                         const roomDoc = await getDoc(roomDocRef);
+                         if (!roomDoc.exists()) throw new Error("Allocated room not found in DB!");
+
+                         const capacity = roomDoc.data().capacity || 1;
+                         const newOccupancy = increment(1);
+                         
+                         // Determine new status
+                         const currentOccupancy = roomDoc.data().occupancy || 0;
+                         let newStatus = (currentOccupancy + 1 >= capacity) ? 'full' : 'available'; 
+
+                         await updateDoc(roomDocRef, {
+                             occupancy: newOccupancy, 
+                             status: newStatus
+                         });
+
+                         addStudentForm.reset();
+                         if(studentRoomInput) studentRoomInput.value = ''; 
+                         if(studentRoomPrefSelect) studentRoomPrefSelect.value = ''; 
+                         showPopup('popup-new-student');
+
+                     } catch (error) {
+                         alert('Failed to create student: ' + error.message);
+                         // TODO: Consider cleaning up Auth user if Firestore writes fail
+                     } finally {
+                         if(createStudentBtn) createStudentBtn.disabled = false; 
+                     }
+                 });
+             }
+
+            if(complaintForm) {
+                complaintForm.addEventListener('submit', async (e) => { 
+                    e.preventDefault(); 
+                    const complaintTextInput = document.getElementById('complaint-text');
+                    if(!complaintTextInput) return;
+                    const complaintText = complaintTextInput.value;
+                    const user = auth.currentUser; if (!user) return alert('Not logged in!');
+                    try {
+                        const studentDoc = await getDoc(doc(db, 'students', user.uid));
+                        const studentName = studentDoc.exists() ? studentDoc.data().name : 'Unknown Student';
+                        await addDoc(collection(db, 'complaints'), { 
+                            studentId: user.uid, 
+                            studentName: studentName, 
+                            issue: complaintText, 
+                            status: 'Pending', 
+                            createdAt: serverTimestamp() 
+                        });
+                        complaintForm.reset(); 
+                        showPopup('popup-complaint');
+                    } catch (error) { alert('Failed to submit: ' + error.message); }
+                });
+            }
+            
+            if(leaveForm) {
+                 leaveForm.addEventListener('submit', async (e) => { 
+                     e.preventDefault();
+                     const startDateInput = document.getElementById('leave-start-date');
+                     const endDateInput = document.getElementById('leave-end-date');
+                     const reasonInput = document.getElementById('leave-reason');
+                     if(!startDateInput || !endDateInput || !reasonInput) return;
+                     
+                     const user = auth.currentUser; if (!user) return alert('Not logged in!');
+                     
+                     const startDate = Timestamp.fromDate(new Date(startDateInput.value));
+                     const endDate = Timestamp.fromDate(new Date(endDateInput.value));
+                     const reason = reasonInput.value;
+                     
+                     if (endDate.seconds < startDate.seconds) {
+                         alert("End date cannot be before the start date.");
+                         return;
+                     }
+                     
+                     try {
+                         const studentDoc = await getDoc(doc(db, 'students', user.uid));
+                         const studentName = studentDoc.exists() ? studentDoc.data().name : 'Unknown Student';
+                         
+                         await addDoc(collection(db, 'leaveRequests'), { 
+                             studentId: user.uid, 
+                             studentName: studentName, 
+                             startDate: startDate,
+                             endDate: endDate,
+                             reason: reason, 
+                             status: 'Pending', 
+                             createdAt: serverTimestamp() 
+                         });
+                         leaveForm.reset(); 
+                         showPopup('popup-leave-request');
+                     } catch (error) { alert('Failed to submit leave request: ' + error.message); }
+                 });
+            }
+
+            if(createInvoiceForm) {
+                createInvoiceForm.addEventListener('submit', async (e) => { 
+                    e.preventDefault(); 
+                    if(!invoiceStudentSelect) return;
+                    const selectedStudent = invoiceStudentSelect.value;
+                    if (!selectedStudent) { alert('Please select a student.'); return; }
+
+                    const descInput = document.getElementById('invoice-desc');
+                    const amountInput = document.getElementById('invoice-amount');
+                    const dateInput = document.getElementById('invoice-due-date');
+                    if(!descInput || !amountInput || !dateInput) return;
+
+                    const [studentId, studentName] = selectedStudent.split('|');
+                    const description = descInput.value;
+                    const amount = parseFloat(amountInput.value);
+                    const dueDateString = dateInput.value;
+                    
+                    if (!dueDateString) { alert('Please select a due date.'); return; } 
+                    // Add 1 day to fix timezone issue where date is stored as one day prior
+                    const date = new Date(dueDateString);
+                    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+                    const correctedDate = new Date(date.getTime() + userTimezoneOffset);
+                    const dueDate = Timestamp.fromDate(correctedDate);
+
+
+                    try {
+                        await addDoc(collection(db, 'invoices'), { 
+                            studentId: studentId, 
+                            studentName: studentName, 
+                            description: description, 
+                            amount: amount, 
+                            status: 'Pending', 
+                            dueDate: dueDate, 
+                            createdAt: serverTimestamp() 
+                        });
+                        createInvoiceForm.reset(); 
+                        showPopup('popup-new-invoice');
+                    } catch (error) { alert('Failed to create invoice: ' + error.message); }
+                });
+            }
+
+
+            // --- 10. EVENT DELEGATION (Action Buttons) ---
+             if (wardenComplaintsTableBody) {
+                 wardenComplaintsTableBody.addEventListener('click', async (e) => { 
+                     if (e.target.classList.contains('resolve-btn')) {
+                         const complaintId = e.target.dataset.id;
+                         if (!complaintId) return; 
+                         try { 
+                             const complaintRef = doc(db, 'complaints', complaintId); 
+                             await updateDoc(complaintRef, { status: 'Resolved' }); 
+                         } 
+                         catch (error) { alert('Failed to resolve: ' + error.message); }
+                     }
+                 });
+             }
+             if (adminInvoicesTableBody) {
+                 adminInvoicesTableBody.addEventListener('click', async (e) => { 
+                     if (e.target.classList.contains('mark-paid-btn')) {
+                         const invoiceId = e.target.dataset.id;
+                         if (!invoiceId) return; 
+                         try { 
+                             const invoiceRef = doc(db, 'invoices', invoiceId); 
+                             await updateDoc(invoiceRef, { status: 'Paid' }); 
+                         } 
+                         catch (error) { alert('Failed to update invoice: ' + error.message); }
+                     }
+                 });
+             }
+             
+             if (wardenLeaveTableBody) {
+                 wardenLeaveTableBody.addEventListener('click', async (e) => { 
+                    e.target.disabled = true; // Disable button on click
+                    const id = e.target.dataset.id;
+                    if (!id) return;
+                    
+                    let newStatus = null;
+                    if (e.target.classList.contains('approve-leave-btn')) {
+                        newStatus = 'Approved';
+                    } else if (e.target.classList.contains('deny-leave-btn')) {
+                        newStatus = 'Denied';
+                    }
+                    
+                    if(newStatus) {
+                         try { 
+                             const leaveRef = doc(db, 'leaveRequests', id); 
+                             await updateDoc(leaveRef, { status: newStatus }); 
+                         } 
+                         catch (error) { 
+                             alert('Failed to update leave status: ' + error.message); 
+                             e.target.disabled = false; // Re-enable on error
+                         }
+                    } else {
+                        e.target.disabled = false; // Re-enable if not an action button
+                    }
+                 });
+             }
+
+
+            // --- 11. UTILITY FUNCTIONS ---
+            function setupNav(buttons, modules) { 
+                if (!buttons || !modules) return; 
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        buttons.forEach(btn => btn.classList.remove('active')); 
+                        modules.forEach(mod => mod.classList.remove('active'));
+                        button.classList.add('active'); 
+                        const targetModuleId = button.id.replace('nav-', '') + '-module';
+                        const targetElement = document.getElementById(targetModuleId);
+                        if(targetElement) targetElement.classList.add('active'); 
+                    });
+                });
+            }
+            function showPopup(popupId) { 
+                const el = document.getElementById(popupId);
+                if(el) el.classList.add('show');
+            }
+            function closePopup(popupId) { 
+                const el = document.getElementById(popupId);
+                if(el) el.classList.remove('show');
+            }
+            window.closePopup = closePopup; // Make global
+            document.querySelectorAll('.popup').forEach(popup => { 
+                popup.addEventListener('click', function(event) { if (event.target === popup) { closePopup(popup.id); } });
+            });
+
+
+            // --- 12. INITIALIZATION ---
+            setupNav(adminNavButtons, adminModules);
+            setupNav(wardenNavButtons, wardenModules);
+            setupNav(studentNavButtons, studentModules);
+
+        }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
